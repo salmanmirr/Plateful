@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Plateful</string>
+    <string name="api_key">a7331f803de24f328fa0e531103d3717</string>
+
 </resources>
