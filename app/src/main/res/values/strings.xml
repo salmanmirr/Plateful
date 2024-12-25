@@ -1,5 +1,22 @@
 <resources>
     <string name="app_name">Plateful</string>
     <string name="api_key">a7331f803de24f328fa0e531103d3717</string>
+    <string name="menu">Menu</string>
+    <string-array name="tags">
+        <item>main course</item>
+        <item>side dish</item>
+        <item>dessert</item>
+        <item>appetizer</item>
+        <item>salad</item>
+        <item>bread</item>
+        <item>breakfast</item>
+        <item>soup</item>
+        <item>beverage</item>
+        <item>sauce</item>
+        <item>marinade</item>
+        <item>fingerfood</item>
+        <item>snack</item>
+        <item>drink</item>
+    </string-array>
 
 </resources>
