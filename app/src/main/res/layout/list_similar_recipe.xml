@@ -21,7 +21,7 @@
             android:text="Similar Name"
             android:textStyle="bold"
             android:textColor="@color/maroon"
-            android:padding="8dp"
+            android:padding="4dp"
             android:textAlignment="center"
             android:singleLine="true"
             android:ellipsize="marquee"
@@ -29,7 +29,7 @@
             android:scrollHorizontally="true"/>
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:id="@+id/imageView_similar"
             android:scaleType="centerCrop"/>
         <TextView
@@ -39,7 +39,7 @@
             android:text="Similar Name"
             android:textStyle="italic"
             android:textColor="@color/black"
-            android:padding="8dp"
+            android:padding="4dp"
             android:textAlignment="center"
             android:singleLine="true"
             android:ellipsize="marquee"

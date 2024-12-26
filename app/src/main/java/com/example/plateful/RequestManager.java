@@ -75,7 +75,7 @@ public class RequestManager {
 
     public void getSimilarRecipes(SimilarRecipesListener listener, int id){
         CallSimilarRecipes callSimilarRecipes = retrofit.create(CallSimilarRecipes.class);
-        Call<List<SimilarRecipeResponse>> call = callSimilarRecipes.callSimilarRecipe(id, Integer.parseInt("4"), context.getString(R.string.api_key));
+        Call<List<SimilarRecipeResponse>> call = callSimilarRecipes.callSimilarRecipe(id, Integer.parseInt("10"), context.getString(R.string.api_key));
         call.enqueue((new Callback<List<SimilarRecipeResponse>>() {
             @Override
             public void onResponse(Call<List<SimilarRecipeResponse>> call, Response<List<SimilarRecipeResponse>> response) {
