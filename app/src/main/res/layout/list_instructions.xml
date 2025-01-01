@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textview_instruction_name"
+            android:id="@+id/textView_instruction_name"
             android:text="Instruction"
             android:textColor="@color/maroon"
             android:textAlignment="center"

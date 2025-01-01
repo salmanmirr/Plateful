@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plateful.Models.InstructionsResponse;
@@ -14,7 +15,7 @@ import com.example.plateful.R;
 
 import java.util.List;
 
-public class InstructionsAdapter extends  RecyclerView.Adapter<InstructionsViewHolder>{
+public class InstructionsAdapter extends RecyclerView.Adapter<InstructionsViewHolder>{
 
     Context context;
     List<InstructionsResponse> list;
@@ -36,6 +37,10 @@ public class InstructionsAdapter extends  RecyclerView.Adapter<InstructionsViewH
 
         holder.textView_instruction_name.setText(list.get(position).name);
         holder.recycler_instructions_steps.setHasFixedSize(true);
+        holder.recycler_instructions_steps.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+        InstructionStepAdapter stepAdapter = new InstructionStepAdapter(context, list.get(position).steps);
+        holder.recycler_instructions_steps.setAdapter(stepAdapter);
+
 
     }
 
@@ -53,7 +58,7 @@ class InstructionsViewHolder extends RecyclerView.ViewHolder{
 
     public InstructionsViewHolder(@NonNull View itemView) {
         super(itemView);
-        textView_instruction_name = itemView.findViewById(R.id.textview_instruction_name);
+        textView_instruction_name = itemView.findViewById(R.id.textView_instruction_name);
         recycler_instructions_steps = itemView.findViewById(R.id.recycler_meal_instructions);
 
     }
