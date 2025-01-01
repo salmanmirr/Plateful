@@ -50,6 +50,7 @@
             <TextView
                 android:id="@+id/textView_meal_summary"
                 android:text="Summary"
+                android:maxLines="5"
                 android:textStyle="normal"
                 android:textColor="@color/white"
                 android:textSize="14sp"
@@ -57,6 +58,12 @@
                 android:padding="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/recycler_meal_instructions"
+                android:layout_margin="8dp"/>
 
             <TextView
                 android:text="Similar Recipes"
