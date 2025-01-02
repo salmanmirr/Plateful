@@ -2,9 +2,11 @@ package com.example.plateful;
 
 import android.content.Context;
 
+import com.example.plateful.Listeners.InstructionListener;
 import com.example.plateful.Listeners.RandomRecipeResponseListeners;
 import com.example.plateful.Listeners.RecipeDetailsListener;
 import com.example.plateful.Listeners.SimilarRecipesListener;
+import com.example.plateful.Models.InstructionResponse;
 import com.example.plateful.Models.RandomRecipeApiResponse;
 import com.example.plateful.Models.RecipeDetailsResponse;
 import com.example.plateful.Models.SimilarRecipeResponse;
@@ -94,6 +96,27 @@ public class RequestManager {
         }));
     }
 
+    public void  getInstructions(InstructionListener listener, int id){
+        CallInstructions callInstructions =retrofit.create(CallInstructions.class);
+        Call<List<InstructionResponse>> call = callInstructions.callInstructions(id, context.getString(R.string.api_key));
+        call.enqueue(new Callback<List<InstructionResponse>>() {
+            @Override
+            public void onResponse(Call<List<InstructionResponse>> call, Response<List<InstructionResponse>> response) {
+                if (!response.isSuccessful()){
+                    listener.didError(response.message());
+                    return;
+                }
+                listener.didFetch(response.body(), response.message());
+            }
+
+            @Override
+            public void onFailure(Call<List<InstructionResponse>> call, Throwable t) {
+                listener.didError(t.getMessage());
+
+            }
+        });
+    }
+
     private interface CallRandomRecipes{
         @GET("recipes/random")
         Call<RandomRecipeApiResponse> callRandomRecipe(
@@ -116,6 +139,13 @@ public class RequestManager {
                 @Path("id") int id,
                 @Query("number") int number,
                 @Query("apiKey") String apiKey
+        );
+    }
+    private interface CallInstructions{
+        @GET("recipes/324694/analyzedInstructions")
+        Call<List<InstructionResponse>> callInstructions(
+          @Path("id") int id,
+          @Query("apiKey") String apikey
         );
     }
 
