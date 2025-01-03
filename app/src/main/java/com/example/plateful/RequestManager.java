@@ -142,7 +142,7 @@ public class RequestManager {
         );
     }
     private interface CallInstructions{
-        @GET("recipes/324694/analyzedInstructions")
+        @GET("recipes/{id}/analyzedInstructions")
         Call<List<InstructionResponse>> callInstructions(
           @Path("id") int id,
           @Query("apiKey") String apikey
