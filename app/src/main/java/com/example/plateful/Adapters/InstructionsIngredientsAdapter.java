@@ -17,7 +17,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class InstructionsIngredientsAdapter extends RecyclerView.Adapter<InstructionIngredientsViewHolder>{
-
     Context context;
     List<Ingredient> list;
 
@@ -29,14 +28,15 @@ public class InstructionsIngredientsAdapter extends RecyclerView.Adapter<Instruc
     @NonNull
     @Override
     public InstructionIngredientsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new InstructionIngredientsViewHolder(LayoutInflater.from(context).inflate(R.layout.list_instructions_step_items, parent, false));
+        return new InstructionIngredientsViewHolder(LayoutInflater.from(context).inflate(R.layout.list_instructions_step_items,parent,false));
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull InstructionIngredientsViewHolder holder, int position) {
-        holder.textView_instructions_step_item.setText(list.get(position).name);
-        holder.textView_instructions_step_item.setSelected(true);
+
+        holder.textView_instruction_step_item.setText(list.get(position).name);
+        holder.textView_instruction_step_item.setSelected(true);
         Picasso.get().load("https://img.spoonacular.com/ingredients_100x100/"+list.get(position).image).into(holder.imageView_instructions_step_items);
     }
 
@@ -45,17 +45,13 @@ public class InstructionsIngredientsAdapter extends RecyclerView.Adapter<Instruc
         return list.size();
     }
 }
-
 class InstructionIngredientsViewHolder extends RecyclerView.ViewHolder{
 
     ImageView imageView_instructions_step_items;
-    TextView textView_instructions_step_item;
-
+    TextView textView_instruction_step_item;
     public InstructionIngredientsViewHolder(@NonNull View itemView) {
         super(itemView);
-
-        imageView_instructions_step_items = itemView.findViewById(R.id.imageView_instructions_step_items);
-        textView_instructions_step_item = itemView.findViewById(R.id.textView_instruction_step_item);
-
+        imageView_instructions_step_items=itemView.findViewById(R.id.imageView_instructions_step_items);
+        textView_instruction_step_item=itemView.findViewById(R.id.textView_instruction_step_item);
     }
 }

@@ -18,11 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plateful.Adapters.IngredientsAdapter;
 import com.example.plateful.Adapters.InstructionsAdapter;
 import com.example.plateful.Adapters.SimilarRecipeAdapter;
-import com.example.plateful.Listeners.InstructionsListener;
+import com.example.plateful.Listeners.InstructionListener;
 import com.example.plateful.Listeners.RecipeClickListener;
 import com.example.plateful.Listeners.RecipeDetailsListener;
 import com.example.plateful.Listeners.SimilarRecipesListener;
-import com.example.plateful.Models.InstructionsResponse;
+import com.example.plateful.Models.InstructionResponse;
 import com.example.plateful.Models.RecipeDetailsResponse;
 import com.example.plateful.Models.SimilarRecipeResponse;
 import com.squareup.picasso.Picasso;
@@ -33,12 +33,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     int id;
     TextView textView_meal_name, textView_meal_source, textView_meal_summary;
     ImageView imageView_meal_image;
-    RecyclerView recycler_meal_ingredients, recycler_meal_similar, recycler_meal_instructions;
+    RecyclerView recycler_meal_ingredients, recycler_meal_similar,recycler_meal_instructions;
     RequestManager manager;
     ProgressDialog dialog;
     IngredientsAdapter ingredientsAdapter;
     SimilarRecipeAdapter similarRecipeAdapter;
-    InstructionsAdapter instructionAdapter;
+    InstructionsAdapter instructionsAdapter;
 
 
     @Override
@@ -51,7 +51,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         manager =new RequestManager(this);
         manager.getRecipeDetails(recipeDetailsListener, id);
         manager.getSimilarRecipes(similarRecipesListener, id);
-        manager.getInstructions(instructionsListener, id);
+        manager.getInstructions(instructionListener,id);
         dialog=new ProgressDialog(this);
         dialog.setTitle("Loading Details........");
         dialog.show();
@@ -119,13 +119,15 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         }
     };
 
-    private final InstructionsListener instructionsListener = new InstructionsListener() {
+    private final InstructionListener instructionListener= new InstructionListener() {
+
         @Override
-        public void didFetch(List<InstructionsResponse> response, String message) {
+        public void didFetch(List<InstructionResponse> responses, String message) {
             recycler_meal_instructions.setHasFixedSize(true);
-            recycler_meal_instructions.setLayoutManager(new LinearLayoutManager(RecipeDetailsActivity.this, LinearLayoutManager.VERTICAL, false));
-            instructionAdapter = new InstructionsAdapter(RecipeDetailsActivity.this, response);
-            recycler_meal_instructions.setAdapter(instructionAdapter);
+            recycler_meal_instructions.setLayoutManager(new LinearLayoutManager(RecipeDetailsActivity.this,LinearLayoutManager.VERTICAL,false));
+            instructionsAdapter=new InstructionsAdapter(RecipeDetailsActivity.this, responses);
+            recycler_meal_instructions.setAdapter(instructionsAdapter);
+
         }
 
         @Override

@@ -10,56 +10,47 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.plateful.Models.InstructionsResponse;
+import com.example.plateful.Models.InstructionResponse;
 import com.example.plateful.R;
 
 import java.util.List;
 
-public class InstructionsAdapter extends RecyclerView.Adapter<InstructionsViewHolder>{
-
+public class InstructionsAdapter extends RecyclerView.Adapter<InstructionViewHolder> {
     Context context;
-    List<InstructionsResponse> list;
+    List<InstructionResponse> list;
 
-    public InstructionsAdapter(Context context, List<InstructionsResponse> list) {
+    public InstructionsAdapter(Context context, List<InstructionResponse> list) {
         this.context = context;
         this.list = list;
     }
 
     @NonNull
     @Override
-    public InstructionsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new InstructionsViewHolder(LayoutInflater.from(context).inflate(R.layout.list_instructions, parent, false));
-
+    public InstructionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new InstructionViewHolder(LayoutInflater.from(context).inflate(R.layout.list_instructions,parent,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull InstructionsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull InstructionViewHolder holder, int position) {
 
         holder.textView_instruction_name.setText(list.get(position).name);
-        holder.recycler_instructions_steps.setHasFixedSize(true);
-        holder.recycler_instructions_steps.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-        InstructionStepAdapter stepAdapter = new InstructionStepAdapter(context, list.get(position).steps);
-        holder.recycler_instructions_steps.setAdapter(stepAdapter);
-
-
+        holder.recycler_instruction_steps.setHasFixedSize(true);
+        holder.recycler_instruction_steps.setLayoutManager(new LinearLayoutManager(context,LinearLayoutManager.VERTICAL,false));
+        InstructionStepAdapter stepAdapter=new InstructionStepAdapter(context, list.get(position).steps);
+        holder.recycler_instruction_steps.setAdapter(stepAdapter);
     }
-
     @Override
     public int getItemCount() {
         return list.size();
     }
 }
-
-class InstructionsViewHolder extends RecyclerView.ViewHolder{
-
+class InstructionViewHolder extends RecyclerView.ViewHolder{
     TextView textView_instruction_name;
-    RecyclerView recycler_instructions_steps;
+    RecyclerView recycler_instruction_steps;
 
-
-    public InstructionsViewHolder(@NonNull View itemView) {
+    public InstructionViewHolder(@NonNull View itemView) {
         super(itemView);
-        textView_instruction_name = itemView.findViewById(R.id.textView_instruction_name);
-        recycler_instructions_steps = itemView.findViewById(R.id.recycler_meal_instructions);
-
+        textView_instruction_name=itemView.findViewById(R.id.textView_instruction_name);
+        recycler_instruction_steps=itemView.findViewById(R.id.recycler_instruction_steps);
     }
 }

@@ -2,11 +2,11 @@ package com.example.plateful;
 
 import android.content.Context;
 
-import com.example.plateful.Listeners.InstructionsListener;
+import com.example.plateful.Listeners.InstructionListener;
 import com.example.plateful.Listeners.RandomRecipeResponseListeners;
 import com.example.plateful.Listeners.RecipeDetailsListener;
 import com.example.plateful.Listeners.SimilarRecipesListener;
-import com.example.plateful.Models.InstructionsResponse;
+import com.example.plateful.Models.InstructionResponse;
 import com.example.plateful.Models.RandomRecipeApiResponse;
 import com.example.plateful.Models.RecipeDetailsResponse;
 import com.example.plateful.Models.SimilarRecipeResponse;
@@ -96,12 +96,12 @@ public class RequestManager {
         }));
     }
 
-    public void getInstructions(InstructionsListener listener, int id) {
-        CallInstructions callInstructions = retrofit.create(CallInstructions.class);
-        Call<List<InstructionsResponse>> call = callInstructions.callInstructions(id, context.getString(R.string.api_key));
-        call.enqueue(new Callback<List<InstructionsResponse>>() {
+    public void  getInstructions(InstructionListener listener, int id){
+        CallInstructions callInstructions =retrofit.create(CallInstructions.class);
+        Call<List<InstructionResponse>> call = callInstructions.callInstructions(id, context.getString(R.string.api_key));
+        call.enqueue(new Callback<List<InstructionResponse>>() {
             @Override
-            public void onResponse(Call<List<InstructionsResponse>> call, Response<List<InstructionsResponse>> response) {
+            public void onResponse(Call<List<InstructionResponse>> call, Response<List<InstructionResponse>> response) {
                 if (!response.isSuccessful()){
                     listener.didError(response.message());
                     return;
@@ -110,8 +110,9 @@ public class RequestManager {
             }
 
             @Override
-            public void onFailure(Call<List<InstructionsResponse>> call, Throwable throwable) {
-                listener.didError(throwable.getMessage());
+            public void onFailure(Call<List<InstructionResponse>> call, Throwable t) {
+                listener.didError(t.getMessage());
+
             }
         });
     }
@@ -140,12 +141,11 @@ public class RequestManager {
                 @Query("apiKey") String apiKey
         );
     }
-
     private interface CallInstructions{
         @GET("recipes/{id}/analyzedInstructions")
-        Call<List<InstructionsResponse>> callInstructions(
-                @Path("id") int id,
-                @Query("apiKey") String apiKey
+        Call<List<InstructionResponse>> callInstructions(
+          @Path("id") int id,
+          @Query("apiKey") String apikey
         );
     }
 
