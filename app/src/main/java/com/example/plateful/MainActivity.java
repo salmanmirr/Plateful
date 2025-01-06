@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -22,6 +24,8 @@ import com.example.plateful.Adapters.RandomRecipeAdapter;
 import com.example.plateful.Listeners.RandomRecipeResponseListeners;
 import com.example.plateful.Listeners.RecipeClickListener;
 import com.example.plateful.Models.RandomRecipeApiResponse;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
     List<String> tags = new ArrayList<>();
     SearchView searchView;
 
+    FirebaseAuth auth;
+    Button button;
+    //TextView textView;
+    FirebaseUser user;
+
+
 
 
 
@@ -42,6 +52,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        auth = FirebaseAuth.getInstance();
+        button = findViewById(R.id.logout);
+        //textView = findViewById(R.id.user_details);
+        user = auth.getCurrentUser();
+
+        if (user == null) {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        else {
+            Toast.makeText(this, "nothing", Toast.LENGTH_SHORT).show();
+        }
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         dialog = new ProgressDialog(this);
         dialog.setTitle("Loading...");
@@ -61,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        spinner = findViewById(R.id.apinner_tags);
+        spinner = findViewById(R.id.spinner_tags);
         ArrayAdapter arrayAdapter =ArrayAdapter.createFromResource(
                 this,
                 R.array.tags,
