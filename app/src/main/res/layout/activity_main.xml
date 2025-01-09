@@ -67,13 +67,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/tags"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:background="@color/white" />
 
     <!-- RecyclerView for Random Recipes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_random"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:layout_margin="4dp" />
 
 </LinearLayout>

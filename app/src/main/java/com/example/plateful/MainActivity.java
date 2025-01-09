@@ -18,12 +18,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plateful.Adapters.RandomRecipeAdapter;
 import com.example.plateful.Listeners.RandomRecipeResponseListeners;
 import com.example.plateful.Listeners.RecipeClickListener;
 import com.example.plateful.Models.RandomRecipeApiResponse;
+import com.example.plateful.Models.Recipe;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     RandomRecipeAdapter randomRecipeAdapter;
     RecyclerView recyclerView;
     Spinner spinner;
-    List<String> tags = new ArrayList<>();
+    List<String> tags = new ArrayList<String>();
     SearchView searchView;
 
     FirebaseAuth auth;
@@ -45,13 +47,45 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser user;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        dialog = new ProgressDialog(this);
+        dialog.setTitle("Loading...");
+        searchView = findViewById(R.id.searchView_home);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                tags.clear();
+                tags.add(query);
+                manager.getRandomRecipes(randomRecipeResponseListeners,tags);
+                dialog.show();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        spinner = findViewById(R.id.spinner_tags);
+        ArrayAdapter arrayAdapter =ArrayAdapter.createFromResource(
+                this,
+                R.array.tags,
+                R.layout.spinner_text
+        );
+        arrayAdapter.setDropDownViewResource(R.layout.spinner_inner_text);
+        spinner.setAdapter(arrayAdapter);
+        spinner.setOnItemSelectedListener(spinnerSelectedListener);
+
+        manager = new RequestManager(this);
+        manager.getRandomRecipes(randomRecipeResponseListeners, tags);
+        dialog.show();
+
 
         auth = FirebaseAuth.getInstance();
         button = findViewById(R.id.logout);
@@ -77,38 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-
-        dialog = new ProgressDialog(this);
-        dialog.setTitle("Loading...");
-        searchView = findViewById(R.id.searchView_home);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                tags.clear();
-                tags.add(query);
-                manager.getRandomRecipes(randomRecipeResponseListeners,tags);
-                dialog.show();
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        spinner = findViewById(R.id.spinner_tags);
-        ArrayAdapter arrayAdapter =ArrayAdapter.createFromResource(
-                this,
-                R.array.tags,
-                R.layout.spinner_text
-        );
-        arrayAdapter.setDropDownViewResource(R.layout.spinner_inner_text);
-        spinner.setAdapter(arrayAdapter);
-        spinner.setOnItemSelectedListener(spinnerSelectedListener);
-
-        manager = new RequestManager(this);
-//        manager.getRandomRecipes(randomRecipeResponseListeners);
-//        dialog.show();
     }
 
     private final RandomRecipeResponseListeners randomRecipeResponseListeners = new RandomRecipeResponseListeners() {
@@ -117,10 +119,9 @@ public class MainActivity extends AppCompatActivity {
             dialog.dismiss();
             recyclerView = findViewById(R.id.recycler_random);
             recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 1));
-            randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, response.recipes,recipeClickListener);
+            recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+            randomRecipeAdapter = new RandomRecipeAdapter(MainActivity.this, response.recipes, recipeClickListener);
             recyclerView.setAdapter(randomRecipeAdapter);
-
 
 
         }
@@ -135,11 +136,15 @@ public class MainActivity extends AppCompatActivity {
     private final AdapterView.OnItemSelectedListener spinnerSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-            tags.clear();
-            tags.add(adapterView.getSelectedItem().toString());
-            manager.getRandomRecipes(randomRecipeResponseListeners, tags);
-            dialog.show();
+            String selectedTag = adapterView.getSelectedItem().toString();
 
+            // Ensure the selected tag is valid before making the API call
+            if (!selectedTag.equals("Select a category")) { // Replace with your actual placeholder text
+                tags.clear();
+                tags.add(selectedTag);
+                manager.getRandomRecipes(randomRecipeResponseListeners, tags);
+                dialog.show();
+            }
         }
 
         @Override
